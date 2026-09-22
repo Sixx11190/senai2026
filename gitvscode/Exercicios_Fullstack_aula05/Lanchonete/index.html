@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParaLanches</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <label for="nome">Nome: </label>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+<br>
+    <label for="lanche">Lanche: </label>
+    <select id="lanche">
+        <option value="23.00">X-Burguer - R$ 23,00</option>
+        <option value="14.00">X-Salada - R$ 14,00</option>
+        <option value="27.00">X-Bacon - R$ 27,00</option>
+        <option value="30.00">X-Tudo - R$ 30,00</option>
+    </select>
+<br>
+    <label for="qtd">Quantidade: </label>
+    <input type="number" id="qtd" min="1" max="10" placeholder="Ex: 1">
+<br>
+    <label for="bebida">Bebida: </label>
+    <select id="bebida">
+        <option value="7.00">Refrigerante - R$ 7,00</option>
+        <option value="10.00">Suco - R$ 10,00</option>
+        <option value="5.00">Água - R$ 5,00</option>
+    </select>
+<br>
+    <button id="calcular">Finalizar Pedido</button>
+<div id="resultado">
+    <h1>Pedido realizado!</h1>
+
+    <p id="nomeCliente">your name</p>
+    <p id="total"> total: R$ 0,00</p>
+    <p id="desconto">Desconto: R$ 0,00</p>
+    <p id="subtotal">Subtotal: R$ 0,00</p>
+    <p id="qtd2">Quantidade: 0</p>
+    <script src="script.js"></script>
+</div>
+</body>
+</html>

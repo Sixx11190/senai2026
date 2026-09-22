@@ -1,0 +1,23 @@
+[
+    {
+        "id":1,
+        "paciente":"Sayuriww",
+        "data":"08/09/2026",
+        "peso":12,
+        "altura":399
+    },
+    {
+        "id":2,
+        "paciente":"julioww",
+        "data":"22/32/2077",
+        "peso":10,
+        "altura":110
+    },
+    {
+        "id":3,
+        "paciente":"Eyckww",
+        "data":"277 a.c",
+        "peso":777,
+        "altura":666
+    }
+]
