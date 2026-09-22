@@ -1,40 +1,47 @@
 
-const btnCalculo = document.getElementById("btnCalculo")
-const limparConteudo = document.getElementById("clenn")
+function calcular(){
+let preco = Number(document.getElementById("preco").value)
+let quantidade = Number(document.getElementById("quantidade").value)
+let pagamento = Number(document.getElementById("pagamento").value)
+let valorRecebido = Number(document.getElementById("valorRecebido").value)
 
-const subtotal = document.getElementById("subtotal")
-const desconto = document.getElementById("desconto")
-const total = document.getElementById("total")
+let nomePagamento;
 
-btnCalculo.addEventListener("click", function(){
+let subtotal = preco * quantidade;
 
-const precoProduto = Number(document.getElementById("preco").value)
-const qtdProduto = Number(document.getElementById("qtd").value)
-const pagamentoP = document.getElementById("fp")
+let quantidadeDesconto = 0;
 
-if (precoProduto === "" || (isNaN(qtdProduto)) || (isNaN(pagamentoP))){
-    alert("preencha todos os campos")
-
-    return
+if (pagamento === 1){
+quantidadeDesconto = 10;
+nomePagamento = "Dinheiro"
+} else if (pagamento === 2){
+quantidadeDesconto = 5;
+nomePagamento = "Pix"
+} else {
+quantidadeDesconto = 0;
+nomePagamento = "Cartão"
 }
 
-subtotal = precoProduto * qtdProduto
+let valorDesconto = subtotal * (quantidadeDesconto / 100);
 
-if (precoProduto = Dinheiro){
-    (desconto = qtdProduto / 0.01)
-}else if (precoProduto = Pix){
-    (desconto = qtdProduto / 0.005)
-}else{
-    (desconto = qtdProduto / 0)
+let total = subtotal - valorDesconto;
+
+let mensagem =
+"subtotal: R$ " + subtotal.toFixed(2) +
+"<br>Desconto: R$ " + valorDesconto.toFixed(2) +
+"<br>Total: R$ " + total.toFixed(2) +
+"<br>Pagamento: " + nomePagamento;
+
+//Se for dinheiro, precisa calcular o troco
+
+if (pagamento === 1){
+if (valorRecebido >= total) {
+let troco = valorRecebido - total;
+mensagem += "<br>Valor Recebido: R$" + valorRecebido.toFixed(2);
+mensagem += "<br>Troco: R$" + troco.toFixed(2);
+} else {
+mensagem += "<br>Valor recebido insuficiente.";
 }
-
-resultado = (desconto + subtotal) / 2 
-
-subtotal.textContent = `Subtotal ${subtotal}`
-desconto.textContent = `Desconto ${desconto}`
-total.textContent = `Total ${total}`
-
-
-
-})
-
+}
+document.getElementById("resultado").innerHTML = mensagem;
+}

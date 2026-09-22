@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "nome": "Corolla GR",
+        "unidade": "tn",
+        "precoUnitario": 20000,
+        "quantidade": 2
+    },
+    {
+        "id": 2,
+        "nome": "Porsche 911",
+        "unidade": "unidade",
+        "precoUnitario": 600000,
+        "quantidade": 3
+    },
+    {
+        "id": 3,
+        "nome": "Mustang GT",
+        "unidade": "tn",
+        "precoUnitario": 500000,
+        "quantidade": 1
+    }
+]

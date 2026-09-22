@@ -12,23 +12,21 @@
     <input type="number" placeholder="Preço o Produto Ex: 12,00" id="preco" min="0,00">
 
     <label id="qtd">Quantidade</label>
-    <input type="number" placeholder="Quantidade Ex: 1" id="qtd" min="0">
+    <input type="number" placeholder="Quantidade Ex: 1" id="quantidade" min="0">
 
-    <select id="fp">Forma de Pagamento</label>
-        <option>Cartão</option>
-        <option>Pix</option>
-        <option>Dinheiro</option>
+    <label id="fp">Forma de Pagamento</label>
+    <select id="fp">
+        <option value="1">Cartão</option>
+        <option value="2">Pix</option>
+        <option value="3">Dinheiro</option>
     </select>
 
-    <button id="cleann">Limpar</button>
-    <button id="btnCalculo">Enviar</button>
+    <br><br>
 
-    <section id="resultado">
-     <h2>Resultado</h2>
-     <p id="subtotal"></p>
-     <p id="desconto"></p>
-     <p id="total"></p>
-    </section>
+    <button onclick="calcular()">Finalizar Venda</button>
+    <hr>
+    <h2>Resultado</h2>
+    <p id="resultado"></p>
 
     <script src="script.js"></script> 
 </body>
