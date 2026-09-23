@@ -23,3 +23,12 @@ CREATE TABLE venda(
     dt_produto INT NOT NULL,
     dt_entrada DATE NOT NULL
 );
+
+INSERT INTO cliente (nome_cliente, email, dt_nasc) VALUES
+("Michael Jackson", "m.jacksom@gmail.com", "1958-08-29");
+
+INSERT INTO cliente (nome_cliente, email, dt_nasc) VALUES
+("Julião P.P", "mh.tinho@gmail.com", "2024-06-01");
+
+INSERT INTO cliente (nome_cliente, email, dt_nasc) VALUES
+("Joardson", "joardsousa@gmail.com", "2024-06-01");
