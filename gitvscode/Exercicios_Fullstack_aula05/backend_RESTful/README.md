@@ -41,10 +41,10 @@ npm run dev
 # ROTAS
 ---
 ```JSON
-Post time: http://localhost:3000
-Get times: http://localhost:3000
-Put time: http://localhost:3000/id
-Delete time: http://localhost:3000/id
+Post: http://localhost:3000
+Get: http://localhost:3000
+Put: http://localhost:3000/id
+Delete: http://localhost:3000/id
 ```
 # EXEMPLO DE REQUISIÇOES
 ---
