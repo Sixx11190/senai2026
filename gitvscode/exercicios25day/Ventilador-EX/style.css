@@ -1,0 +1,139 @@
+/* Configuração geral da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: white;
+    text-align: center;
+}
+
+/* Caixa principal */
+.container {
+    width: 400px;
+    margin: 50px auto;
+}
+
+/* Desenho do ventilador */
+#ventilador {
+    position: relative;
+
+    width: 300px;
+    height: 300px;
+
+    margin: 30px auto;
+
+    background-color: #444;
+
+    border: 10px solid #777;
+    border-radius: 50%;
+}
+
+.status {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+/* Conjunto das hélices */
+.helices {
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) rotate(0deg);
+
+    
+}
+
+/* Cada hélice */
+.helice {
+    position: absolute;
+
+    width: 35px;
+    height: 80px;
+
+    background-color: #ddd;
+
+    top: 10px;
+    left: 72px;
+
+    border-radius: 50%;
+
+    transform-origin: center 80px;
+}
+
+/* Primeira hélice */
+.helice:nth-child(1) {
+    transform: rotate(0deg);
+}
+
+/* Segunda hélice */
+.helice:nth-child(2) {
+    transform: rotate(120deg);
+}
+
+/* Terceira hélice */
+.helice:nth-child(3) {
+    transform: rotate(240deg);
+}
+
+/* Centro do ventilador */
+.centro {
+    position: absolute;
+
+    width: 45px;
+    height: 45px;
+
+    background-color: #222;
+
+    border-radius: 50%;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 10;
+}
+
+/* Animação das hélices */
+@keyframes girar {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Quando o ventilador está ligado */
+#ventilador.ligado {
+    box-shadow: 0 0 30px #00aaff;
+}
+
+#ventilador.ligado .helices {
+    animation: girar 1s linear infinite;
+}
+
+/* Botões */
+#interruptor {
+    padding: 10px 20px;
+
+    margin: 5px;
+
+    border: none;
+    border-radius: 10px;
+    background-color: #00aaff;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+#interruptor:hover {
+    opacity: 0.8;
+    background-color: #3589b4;
+}
