@@ -140,7 +140,8 @@ Delete: http://localhost:3000/id
 ]
 ```
 ---
-<img width="1188" height="706" alt="image" src="https://github.com/user-attachments/assets/6da092dc-8d06-4021-a70b-2af1234483a5" />
+<img width="1679" height="549" alt="Captura de tela 2026-09-29 094758" src="https://github.com/user-attachments/assets/e28dd73a-b112-4b26-9731-25013bbe116f" />
+
 
 
 
