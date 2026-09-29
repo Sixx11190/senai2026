@@ -5,6 +5,20 @@ const mostrarItens = (req, res) => {
     res.send(registros);
 }
 
+const mostrarItem = (req, res) => {
+    const id = req.params.id;
+        let encontrou = false;
+    registros.forEach((item) => {
+        if (item.id == id) {
+        res.send(item)
+            encontrou = true
+        }
+    });
+        if (!encontrou) {
+    res.status(404).send("Item não encontrado");
+        }
+};
+
 const novoItem = (req, res) => {
     if (req.body) {
         res.send("Item add successfully!");
@@ -47,6 +61,7 @@ app.use(express.urlencoded({ extended: true }));
 const porta = 3000;
 
 app.get("/", mostrarItens);
+app.get("/:id", mostrarItem);
 app.post("/", novoItem);
 app.delete("/:id", excluirItem);
 app.put("/:id", alterarItem);
