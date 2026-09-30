@@ -28,8 +28,7 @@ body {
 }
 
 .status {
-    margin-top: 20px;
-    font-size: 18px;
+    font-family: Arial, sans-serif;
 }
 
 /* Conjunto das hélices */
@@ -42,7 +41,7 @@ body {
     top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%);
 
     
 }
@@ -119,21 +118,19 @@ body {
 }
 
 /* Botões */
-#interruptor {
+button {
     padding: 10px 20px;
 
     margin: 5px;
 
     border: none;
-    border-radius: 10px;
-    background-color: #00aaff;
+    border-radius: 5px;
 
     cursor: pointer;
 
     font-size: 16px;
 }
 
-#interruptor:hover {
+button:hover {
     opacity: 0.8;
-    background-color: #3589b4;
 }
