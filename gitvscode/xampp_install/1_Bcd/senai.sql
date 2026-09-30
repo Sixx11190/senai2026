@@ -75,3 +75,7 @@ ADD CONSTRAINT fk_venda_produto
 FOREIGN KEY (id_produto) 
 REFERENCES produto(id_produto);
 
+/*Determina Chave Unica*/
+ALTER TABLE produto
+ADD CONSTRAINT uk_produto_unico UNIQUE (produto);
+
