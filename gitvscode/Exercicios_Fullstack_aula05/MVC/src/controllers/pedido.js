@@ -25,7 +25,7 @@ const alterar = (req, res) => {
     pedidos.forEach(pedidos => {
         if (pedidos.id == id) {
             pedidos.cliente_id = dados.cliente_id;
-            pedidos.produto = dados.produto_id;
+            pedidos.produto = dados.produto;
             pedidos.quantidade = dados.quantidade;
             pedidos.preco = dados.preco;
         }
