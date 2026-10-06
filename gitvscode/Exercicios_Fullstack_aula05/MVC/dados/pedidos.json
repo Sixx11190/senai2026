@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "cliente_id": 1,
+        "produto": "Carro Esportivo",
+        "preco": 150000.00,
+        "quantidade": 2
+    },
+    {
+        "id": 2,
+        "cliente_id": 1,
+        "produto": "Moto Esportiva",
+        "preco": 50000.00,
+        "quantidade": 2
+    },
+    {
+        "id": 3,
+        "cliente_id": 2,
+        "produto": "Carro de Luxo",
+        "preco": 300000.00,
+        "quantidade": 1
+    },
+    {
+        "id": 4,
+        "cliente_id": 3,
+        "produto": "Carro Popular",
+        "preco": 40000.00,
+        "quantidade": 3
+    }
+]
