@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "pedido": 1,
+        "produto": 1,
+        "preco": 30,
+        "quantidade": 2
+    },
+    {
+        "id": 2,
+        "pedido": 1,
+        "produto": 2,
+        "preco": 45,
+        "quantidade": 2
+    },
+    {
+        "id": 3,
+        "pedido": 2,
+        "produto": 1,
+        "preco": 30,
+        "quantidade": 1
+    },
+    {
+        "id": 4,
+        "pedido": 3,
+        "produto": 2,
+        "preco": 45,
+        "quantidade": 3
+    }
+]
