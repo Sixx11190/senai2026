@@ -12,19 +12,16 @@ const criar = (req, res) => {
 }
 
 const alterar = (req, res) => { 
-    id = req.params.id;
-    dados = req.body;
+    const id = req.params.id;
+    const dados = req.body;
 
-    clientes.forEach(clientes => {
-        if (clientes.id == id) {
-            clientes.cpf = dados.cpf;
-            clientes.nome = dados.nome;
-        }
+    const busca = clientes.find((cliente) => cliente.id == id)
+
+    Object.keys(dados).forEach((i) => {
+        busca[i] = dados[i];
     });
     res.send("alterado com sucesso!");
-
-
-}
+};
 
 const excluir = (req, res) => { 
     id = req.params.id;

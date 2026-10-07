@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Stray Kids",
+        "email": "john.doe@example.com",
+        "telefone": "123-456-7890",
+        "senha": "password123"
+    },
+    {
+        "id": 2,
+        "name": "Aespa",
+        "email": "jane.smith@example.com",
+        "telefone": "098-765-4321",
+        "senha": "password456"
+    },
+    {
+        "id": 3,
+        "name": "le serafim",
+        "email": "alice.johnson@example.com",
+        "telefone": "555-123-4567",
+        "senha": "password789"
+    }
+]

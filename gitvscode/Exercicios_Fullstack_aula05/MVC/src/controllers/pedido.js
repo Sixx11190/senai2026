@@ -19,20 +19,15 @@ const criar = (req, res) => {
 }
 
 const alterar = (req, res) => { 
-    id = req.params.id;
-    dados = req.body;
+    const id = req.params.id;
+    const dados = req.body;
 
-    pedidos.forEach(pedidos => {
-        if (pedidos.id == id) {
-            pedidos.cliente_id = dados.cliente_id;
-            pedidos.produto = dados.produto;
-            pedidos.quantidade = dados.quantidade;
-            pedidos.preco = dados.preco;
-        }
+    const busca = pedidos.find((pedido) => pedido.id == id);
+
+    Object.keys(dados).forEach((i) => {
+        busca[i] = dados[i];
     });
     res.send("alterado com sucesso!");
-
-
 }
 
 const excluir = (req, res) => { 
