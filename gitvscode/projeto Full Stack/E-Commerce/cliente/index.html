@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Hi There! Client</h1>
+        <p>Chose yours products</p>
+    </header>
+
+    <main>
+        <section class="produtos">
+            <h2>Produtos disponiveis</h2>
+
+            <div class="produto">
+                <h3>EarBuds</h3>
+                <p>preco: R$89,00</p>
+
+                <button onclick="adicionarCarrinho('EarBuds', 89.00)">Adicionar ao carrinho</button>
+            </div>
+
+            <div class="produto">
+                <h3>Mouse sem fio</h3>
+                <p>preco: R$59.90</p>
+
+                <button onclick="adicionarCarrinho('Mouse sem fio', 59.90)">Adicionar ao carrinho</button>
+            </div>
+        </section>
+
+        <section class="carrinho">
+            <h2>Meu Carrinho</h2>
+
+            <ul id="listaCarrinho"></ul>
+
+            <h3 id="total">Total: R$0,00</h3>
+
+            <button onclick="finalizarCompra()">Finalizar Compra</button>
+            <button onclick="limparCarrinho()">Clean Buy</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
