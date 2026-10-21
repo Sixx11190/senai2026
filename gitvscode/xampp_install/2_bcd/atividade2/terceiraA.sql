@@ -81,3 +81,5 @@ USE biblioteca;
 
 ALTER TABLE a_alunos
 ADD CONSTRAINT uk_a_alunos_unico UNIQUE (email_alunos);
+
+
