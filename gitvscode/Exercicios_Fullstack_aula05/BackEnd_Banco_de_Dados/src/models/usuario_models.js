@@ -14,23 +14,52 @@ const cadastrar = async ({nome, cpf, email, senha}) => {
     };
 };
 
-const listar = () => {};
+const listar = async () => {
+    const [result] = await con.query(
+        "SELECT * FROM usuarios;"
+    );
+    return result;
+};
 
-const buscar = () => {};
+const buscar = async (id) => {
+    const [result] = await con.query(
+        "SELECT id, nome, email FROM usuarios WHERE id = ?;",
+        [id]
+    );
+    return result;
+};
 
-const excluir = () => {};
+const deletar = async (id) => {
+    const [result] = await con.query(
+        "DELETE FROM usuarios WHERE id = ?;",
+        [id]
+    );
+    return result.affectedRows;
+};
 
 //PUT
-const atualizar = () => {};
+const atualizar = async (id, {nome, cpf, email, senha}) => {
+    const [result] = await con.query(
+        "UPDATE usuarios SET nome = ?, cpf = ?, email = ?, senha = ? WHERE id = ?;",
+        [nome, cpf, email, senha, id]
+    );
+    return result;
+};
 
 //PATCH
-const alterar = () => {};
+const alterar = async (id, {nome, cpf, email, senha}) => {
+    const [result] = await con.query(
+        "UPDATE usuarios SET nome = COALESCE(?, nome), cpf = COALESCE(?, cpf), email = COALESCE(?, email), senha = COALESCE(?, senha) WHERE id = ?;",
+        [nome, cpf, email, senha, id]
+    );
+    return result;
+};
 
 module.exports = {
     cadastrar,
     listar,
     buscar,
-    excluir,
+    deletar,
     atualizar,
     alterar
 };

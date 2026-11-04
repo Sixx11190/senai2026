@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinancePro - Gestão & Mercado</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        binance: {
+                            darkBg: '#0B0E11',
+                            cardBg: '#181A20',
+                            hover: '#1E2329',
+                            border: '#2B313A',
+                            yellow: '#F0B90B',
+                            yellowHover: '#FCD535',
+                            green: '#0ECB81',
+                            red: '#F6465D',
+                            textMuted: '#848E9C'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-binance-darkBg text-gray-100 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Cabeçalho / Navbar -->
+    <header class="bg-binance-cardBg border-b border-binance-border sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-binance-yellow flex items-center justify-center text-black font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <span class="font-extrabold text-lg tracking-wider text-white">FINANCE<span class="text-binance-yellow">PRO</span></span>
+                </div>
+                <!-- Navegação por Abas -->
+                <nav class="hidden md:flex gap-6 text-xs font-semibold">
+                    <button onclick="switchTab('painel')" id="tab-btn-painel" class="text-binance-yellow border-b-2 border-binance-yellow pb-4 pt-4 transition focus:outline-none">
+                        Painel Geral
+                    </button>
+                    <button onclick="switchTab('mercado')" id="tab-btn-mercado" class="text-gray-400 hover:text-white transition pb-4 pt-4 border-b-2 border-transparent focus:outline-none">
+                        Mercado & Ativos
+                    </button>
+                    <button onclick="switchTab('gestao')" id="tab-btn-gestao" class="text-gray-400 hover:text-white transition pb-4 pt-4 border-b-2 border-transparent focus:outline-none">
+                        Gestão Financeira
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Botões e Ações Rápidas -->
+            <div class="flex items-center gap-3">
+                <button onclick="openModal('auth-modal')" class="flex items-center gap-2 bg-binance-hover border border-binance-border hover:border-binance-yellow text-white hover:text-binance-yellow text-xs font-bold px-4 py-2 rounded-lg transition">
+                    <i class="fa-solid fa-user"></i> Entrar / Cadastrar
+                </button>
+                <button onclick="openModal('transaction-modal')" class="bg-binance-yellow hover:bg-binance-yellowHover text-black text-xs font-bold px-4 py-2 rounded-lg transition hidden sm:flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nova Transação
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- 1. PAINEL GERAL -->
+        <div id="view-painel" class="space-y-8">
+            <!-- Métricas Rápidas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-binance-cardBg p-5 rounded-xl border border-binance-border">
+                    <p class="text-xs text-binance-textMuted uppercase font-bold tracking-wider">Faturamento Bruto</p>
+                    <h3 class="text-2xl font-black text-white mt-2">R$ 485.400,00</h3>
+                    <span class="text-xs text-binance-green font-semibold mt-1 inline-block"><i class="fa-solid fa-arrow-trend-up"></i> +14.2% vs mês anterior</span>
+                </div>
+                <div class="bg-binance-cardBg p-5 rounded-xl border border-binance-border">
+                    <p class="text-xs text-binance-textMuted uppercase font-bold tracking-wider">Faturamento Líquido</p>
+                    <h3 class="text-2xl font-black text-white mt-2">R$ 312.850,00</h3>
+                    <span class="text-xs text-binance-green font-semibold mt-1 inline-block"><i class="fa-solid fa-arrow-trend-up"></i> +8.6% margem operacional</span>
+                </div>
+                <div class="bg-binance-cardBg p-5 rounded-xl border border-binance-border">
+                    <p class="text-xs text-binance-textMuted uppercase font-bold tracking-wider">Despesas / Custos</p>
+                    <h3 class="text-2xl font-black text-white mt-2">R$ 172.550,00</h3>
+                    <span class="text-xs text-binance-red font-semibold mt-1 inline-block"><i class="fa-solid fa-arrow-trend-down"></i> -3.1% em impostos</span>
+                </div>
+                <div class="bg-binance-cardBg p-5 rounded-xl border border-binance-border">
+                    <p class="text-xs text-binance-textMuted uppercase font-bold tracking-wider">Margem de Lucro</p>
+                    <h3 class="text-2xl font-black text-white mt-2">64,4%</h3>
+                    <span class="text-xs text-binance-yellow font-semibold mt-1 inline-block">ROI estimado de 3.2x</span>
+                </div>
+            </div>
+
+            <!-- Área de Gráficos -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-binance-cardBg p-6 rounded-xl border border-binance-border">
+                    <h4 class="text-base font-bold text-white mb-4">Desempenho Financeiro</h4>
+                    <div class="h-64">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-binance-cardBg p-6 rounded-xl border border-binance-border">
+                    <h4 class="text-base font-bold text-white mb-4">Distribuição de Capital</h4>
+                    <div class="h-64 flex items-center justify-center">
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. MERCADO & ATIVOS -->
+        <div id="view-mercado" class="hidden space-y-6">
+            <div class="bg-binance-cardBg p-6 rounded-xl border border-binance-border">
+                <h3 class="text-lg font-bold text-white mb-4">Mercado de Ativos</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-binance-darkBg text-gray-400 uppercase">
+                            <tr>
+                                <th class="p-3">Ativo</th>
+                                <th class="p-3">Preço</th>
+                                <th class="p-3">24h %</th>
+                                <th class="p-3">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-binance-border">
+                            <tr>
+                                <td class="p-3 font-bold text-white">Bitcoin (BTC)</td>
+                                <td class="p-3">R$ 340.500,00</td>
+                                <td class="p-3 text-binance-green font-bold">+3.2%</td>
+                                <td class="p-3"><button class="bg-binance-green hover:opacity-90 text-black px-3 py-1 rounded font-bold transition">Comprar</button></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">Ethereum (ETH)</td>
+                                <td class="p-3">R$ 18.200,00</td>
+                                <td class="p-3 text-binance-red font-bold">-1.1%</td>
+                                <td class="p-3"><button class="bg-binance-green hover:opacity-90 text-black px-3 py-1 rounded font-bold transition">Comprar</button></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">Solana (SOL)</td>
+                                <td class="p-3">R$ 850,00</td>
+                                <td class="p-3 text-binance-green font-bold">+5.7%</td>
+                                <td class="p-3"><button class="bg-binance-green hover:opacity-90 text-black px-3 py-1 rounded font-bold transition">Comprar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. GESTÃO FINANCEIRA -->
+        <div id="view-gestao" class="hidden space-y-6">
+            <div class="bg-binance-cardBg p-6 rounded-xl border border-binance-border">
+                <h3 class="text-lg font-bold text-white mb-2">Histórico de Fluxo de Caixa</h3>
+                <p class="text-xs text-gray-400 mb-6">Gerenciamento detalhado de lançamentos de receita e despesas.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-binance-darkBg text-gray-400 uppercase">
+                            <tr>
+                                <th class="p-3">Data</th>
+                                <th class="p-3">Descrição</th>
+                                <th class="p-3">Tipo</th>
+                                <th class="p-3">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-binance-border">
+                            <tr>
+                                <td class="p-3 text-gray-400">04/11/2026</td>
+                                <td class="p-3 font-semibold text-white">Venda de Licenças Enterprise</td>
+                                <td class="p-3"><span class="bg-binance-green/20 text-binance-green px-2 py-0.5 rounded font-bold text-[10px]">RECEITA</span></td>
+                                <td class="p-3 font-bold text-binance-green">+ R$ 45.000,00</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-gray-400">02/11/2026</td>
+                                <td class="p-3 font-semibold text-white">Infraestrutura AWS Cloud</td>
+                                <td class="p-3"><span class="bg-binance-red/20 text-binance-red px-2 py-0.5 rounded font-bold text-[10px]">DESPESA</span></td>
+                                <td class="p-3 font-bold text-binance-red">- R$ 8.200,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal de Autenticação (Login & Cadastro) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-binance-cardBg max-w-md w-full p-6 sm:p-8 rounded-2xl border border-binance-border shadow-2xl relative">
+            <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 text-gray-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Abas Login / Cadastro -->
+            <div class="flex border-b border-binance-border mb-6">
+                <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-binance-yellow text-binance-yellow transition">
+                    Entrar
+                </button>
+                <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-gray-400 hover:text-white transition">
+                    Criar Conta
+                </button>
+            </div>
+
+            <!-- Formulário de Login -->
+            <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">E-mail ou Usuário</label>
+                    <input type="email" id="login-email" required placeholder="admin@financepro.com" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Senha</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow transition">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-lg bg-binance-yellow hover:bg-binance-yellowHover text-black font-bold text-xs transition uppercase tracking-wider">
+                    Acessar Plataforma
+                </button>
+            </form>
+
+            <!-- Formulário de Cadastro -->
+            <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Nome Completo</label>
+                    <input type="text" id="reg-name" required placeholder="Seu Nome" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">E-mail Corporativo</label>
+                    <input type="email" id="reg-email" required placeholder="seuemail@empresa.com" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Senha de Acesso</label>
+                    <input type="password" id="reg-password" required placeholder="Mínimo 8 caracteres" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow transition">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-lg bg-binance-yellow hover:bg-binance-yellowHover text-black font-bold text-xs transition uppercase tracking-wider">
+                    Criar Conta
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Nova Transação -->
+    <div id="transaction-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-binance-cardBg max-w-md w-full p-6 rounded-2xl border border-binance-border shadow-2xl relative">
+            <button onclick="closeModal('transaction-modal')" class="absolute top-5 right-5 text-gray-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-lg font-bold text-white mb-4">Registrar Nova Transação</h3>
+            <form onsubmit="handleTransactionSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Tipo de Lançamento</label>
+                    <select id="trans-type" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow">
+                        <option value="receita">Receita / Faturamento Bruto (+)</option>
+                        <option value="despesa">Despesa / Custo (-)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Descrição</label>
+                    <input type="text" id="trans-desc" required placeholder="Ex: Venda de Serviços" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Valor (R$)</label>
+                    <input type="number" id="trans-value" step="0.01" required placeholder="1500.00" class="w-full bg-binance-darkBg border border-binance-border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-binance-yellow">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-lg bg-binance-yellow hover:bg-binance-yellowHover text-black font-bold text-xs transition uppercase tracking-wider">
+                    Salvar Transação
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

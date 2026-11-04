@@ -1,0 +1,22 @@
+{
+  "name": "binance-finance-hub",
+  "version": "1.0.0",
+  "description": "Plataforma de finanças corporativas e matriz de paridade de poder de compra (PPP)",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "finance",
+    "binance",
+    "ppp",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.4",
+    "bootstrap": "^6.0.0-alpha.1",
+    "tailwindcss": "^4.3.4"
+  }
+}

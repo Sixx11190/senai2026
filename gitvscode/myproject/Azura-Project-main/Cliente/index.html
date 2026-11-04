@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura | Moda pra ser você</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+    document.documentElement.dataset.tema =
+        localStorage.getItem('tema') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro');
+    </script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3D5AFE">
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button id="open-sidebar" class="btn-hamburguer" aria-label="Abrir menu">☰</button>
+            <div class="logo">azura</div>
+        </div>
+    <div class="header-direita">
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#colecoes">Coleções</a>
+            <a href="#sobre">Sobre nós</a>
+            <a href="#contato" id="link-contato">Contato</a>
+            <a href="../../FinancePro/index.html" class="fin">Vendedores</a>
+            <a href="#" class="btn-auth">Entrar / Cadastrar</a>
+        </nav>
+    <button id="btn-tema" class="btn-tema" aria-label="Alternar modo escuro">🌙</button>
+    <button id="btn-config" class="btn-config" aria-label="Configurações">⚙️</button>
+    </div>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+        <button id="close-sidebar" class="btn-fechar" aria-label="Fechar menu">&times;</button>
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="btn-auth">Entrar / Cadastrar</a></li>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#colecoes">Coleções</a></li>
+            <li><a href="#colecoes">Drops especiais</a></li>
+            <li><a href="#colecoes">Limitados</a></li>
+            <li><a href="#colecoes">Ofertas</a></li>
+            <li><a href="https://general-runtime.voiceflow.com" id="IA">Stark Assistente</a></li>
+        </ul>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <section class="hero" id="inicio">
+        <span class="katakana" aria-hidden="true">アズラ</span>
+        <h1 class="titulo-gigante">AZURA</h1>
+        <div class="hero-conteudo">
+            <p class="hero-frase">Roupa pra ser você, sem pose e sem terninho.</p>
+            <div class="hero-acoes">
+                <a href="#colecoes" class="btn">Ver coleções</a>
+                <span class="chip">Nova coleção</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container" id="colecoes">
+        <h2 class="section-title">Nossas coleções</h2>
+
+        <div class="grid-produtos">
+            <div class="card-produto">
+                <img src="https://i.pinimg.com/736x/7d/91/c4/7d91c47cff31cbde859e8461d49bfe1d.jpg" alt="Look Casual Elegante">
+                <div class="card-info">
+                    <h3>Casual Elegante</h3>
+                    <p>R$ 249,90</p>
+                    <a href="login.html" class="btn-comprar">Comprar</a>
+                </div>
+            </div>
+
+            <div class="card-produto">
+                <img src="https://i.pinimg.com/736x/1d/a9/1c/1da91c5aa4d365d4a52f5ecb3442b350.jpg" alt="Look Urbano">
+                <div class="card-info">
+                    <h3>Look Urbano</h3>
+                    <p>R$ 189,90</p>
+                    <a href="login.html" class="btn-comprar">Comprar</a>
+                </div>
+            </div>
+
+            <div class="card-produto">
+                <img src="https://i.pinimg.com/736x/4b/b8/13/4bb81326e7ab0e634ea3d41991a82557.jpg" alt="Look Minimalista">
+                <div class="card-info">
+                    <h3>Look Minimalista</h3>
+                    <p>R$ 152,90</p>
+                    <a href="login.html" class="btn-comprar">Comprar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="sobre" id="sobre">
+        <h2>Sobre a gente</h2>
+        <div>
+            <p>A Azura nasceu entre amigos, com uma ideia simples: fazer moda sem clima de empresa.</p>
+            <p>Aqui você conversa com gente de verdade, e as peças são pra usar no rolê, na escola, no trabalho ou em lugar nenhum.</p>
+        </div>
+    </section>
+
+    <footer id="contato">
+        <span class="katakana-rodape" aria-hidden="true">アズラ</span>
+        <p>&copy; 2026 Azura. Todos os direitos reservados.<br>
+            Fale com a gente: <a href="tel:+5519998065346" class="contato">+55-19-99806-5346</a> | <a href="mailto:contato@azura.com" class="contato">contato.galcio@gmail.com</a>
+        </p>
+    </footer>
+
+    <script>
+        function alertaProduto(nomeProduto) {
+            alert("Você clicou em comprar o produto: " + nomeProduto + "!\nEm breve conectaremos você para finalizar a compra.");
+        }
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker registrado com sucesso!'))
+                .catch((err) => console.log('Erro ao registrar o Service Worker:', err));
+        }
+    </script>
+
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+                window.voiceflow.chat.load({
+                    verify: { projectID: '6ad7c7588939b95c66fca039' },
+                    url: 'https://general-runtime.voiceflow.com',
+                    voice: {
+                        url: 'https://runtime-api.voiceflow.com'
+                    }
+                });
+            }
+            v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs'; v.type = 'text/javascript'; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+    </script>
+
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+
+            <button id="close-modal" class="close-btn" aria-label="Fechar">&times;</button>
+
+            <div class="modal-tabs">
+                <button id="tab-signin" class="tab-btn active">Entrar</button>
+                <button id="tab-signup" class="tab-btn">Cadastrar</button>
+            </div>
+
+            <form id="form-signin" class="auth-form">
+                <h2>Bem-vindo de volta!</h2>
+                <input type="email" placeholder="Seu e-mail" required>
+                <input type="password" placeholder="Sua senha" required>
+                <button type="submit" class="submit-btn">Entrar</button>
+                <h7>Esqueceu sua senha? <a href="senha.html">Clique aqui</a></h7>
+            </form>
+
+            <form id="form-signup" class="auth-form hidden">
+                <h2>Crie sua conta</h2>
+                <input type="text" placeholder="Seu nome" required>
+                <input type="email" placeholder="Seu e-mail" required>
+                <input type="password" placeholder="Crie uma senha" required>
+                <button type="submit" class="submit-btn">Cadastrar</button>
+                <h7>ajuda? <a href="ajuda.html">Clique aqui</a></h7>
+            </form>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
