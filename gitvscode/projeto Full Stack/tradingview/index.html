@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Forex - Disputa entre Amigos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0e14;
+            color: #d1d4dc;
+            user-select: none;
+        }
+
+        .mono-num {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e222d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2e39;
+            border-radius: 3px;
+        }
+
+        .tv-border {
+            border-color: #2a2e39;
+        }
+
+        /* Result Animation Modal */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-sm">
+
+    <!-- TOP HEADER / NAVBAR -->
+    <header class="h-14 bg-[#1e222d] border-b tv-border flex items-center justify-between px-4 shrink-0">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/30">
+                    🎲
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-base text-white tracking-wide">CASINO / RANDOM FX</span>
+                        <span class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded font-bold">100% ALEATÓRIO</span>
+                    </div>
+                    <span class="text-xs text-gray-400">Modo Disputa Entre Amigos</span>
+                </div>
+            </div>
+
+            <div class="h-8 w-px bg-[#2a2e39]"></div>
+
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-400">Preço em Tempo Real</span>
+                <span id="header-price" class="text-lg font-bold mono-num text-[#089981]">1.00000</span>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3 bg-[#131722] px-4 py-1.5 rounded-lg border tv-border">
+                <i data-lucide="wallet" class="w-5 h-5 text-amber-400"></i>
+                <div>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">Seu Saldo</span>
+                    <span id="account-balance" class="font-bold text-base mono-num text-amber-400">$1,000.00</span>
+                </div>
+            </div>
+
+            <button id="btn-reset" class="flex items-center space-x-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-2 rounded-lg transition font-medium text-xs">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                <span>Resetar Saldo ($1.000)</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- BANKRUPT MODAL -->
+    <div id="bankrupt-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-[#1e222d] border-2 border-red-500/80 p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl pop-in space-y-4">
+            <div class="w-16 h-16 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mx-auto text-3xl border border-red-500/40">
+                💸
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-red-400">VOCÊ FALIU!</h3>
+                <p class="text-xs text-gray-400 mt-1">Seu saldo zerou. Hora de recarregar e revanche contra os amigos!</p>
+            </div>
+            <div class="bg-[#131722] p-3 rounded-xl border tv-border">
+                <span class="text-xs text-gray-400 block mb-1">Saldo Atual</span>
+                <span class="text-2xl font-bold mono-num text-red-400">$0.00</span>
+            </div>
+            <button id="btn-reload-bankrupt" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                <span>Recarregar $1,000.00</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP LAYOUT -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        
+        <!-- LEFT: CANVAS CHART CONTAINER -->
+        <div id="chart-parent" class="flex-1 bg-[#131722] relative overflow-hidden flex flex-col min-h-[350px]">
+            
+            <div id="active-bet-banner" class="hidden absolute top-4 left-4 z-20 bg-[#1e222d]/90 backdrop-blur-md border tv-border p-3 rounded-xl shadow-xl flex items-center space-x-4">
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-wider">Aposta Ativa</span>
+                    <span id="banner-type" class="font-bold text-xs px-2 py-0.5 rounded bg-emerald-500 text-white">COMPRA</span>
+                </div>
+                <div class="h-6 w-px bg-[#2a2e39]"></div>
+                <div>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Valor</span>
+                    <span id="banner-amount" class="font-bold mono-num text-amber-400">$100.00</span>
+                </div>
+                <div class="h-6 w-px bg-[#2a2e39]"></div>
+                <div class="text-center min-w-[50px]">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-wider block">Tempo</span>
+                    <span id="banner-timer" class="font-bold mono-num text-xl text-blue-400 animate-pulse">5s</span>
+                </div>
+            </div>
+
+            <!-- Canvas -->
+            <canvas id="trading-chart" class="w-full h-full block cursor-crosshair absolute inset-0"></canvas>
+        </div>
+
+        <!-- RIGHT: CONTROL PANEL -->
+        <div class="w-full md:w-80 bg-[#1e222d] border-t md:border-t-0 md:border-l tv-border p-4 flex flex-col justify-between shrink-0 overflow-y-auto z-20">
+            <div class="space-y-5">
+                <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-2">Tempo da Rodada</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button data-time="5" class="btn-timer bg-blue-600 text-white font-bold py-2 rounded-lg border tv-border transition hover:border-blue-500 text-xs">5s</button>
+                        <button data-time="10" class="btn-timer bg-[#131722] text-gray-300 font-bold py-2 rounded-lg border tv-border transition hover:border-blue-500 text-xs">10s</button>
+                        <button data-time="15" class="btn-timer bg-[#131722] text-gray-300 font-bold py-2 rounded-lg border tv-border transition hover:border-blue-500 text-xs">15s</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Valor da Aposta ($)</label>
+                        <button id="btn-all-in" class="text-[10px] bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 px-2 py-0.5 rounded font-bold border border-amber-500/30">ALL-IN 🔥</button>
+                    </div>
+                    <input id="input-bet-amount" type="number" value="100" min="10" step="10" class="w-full bg-[#131722] border tv-border rounded-lg px-3 py-2.5 font-mono text-base text-white focus:outline-none focus:border-blue-500 font-bold">
+                    
+                    <div class="grid grid-cols-3 gap-2 mt-2">
+                        <button data-amount="100" class="btn-quick-bet bg-[#131722] hover:bg-[#2a2e39] text-gray-300 font-mono py-1.5 rounded border tv-border text-xs">$100</button>
+                        <button data-amount="500" class="btn-quick-bet bg-[#131722] hover:bg-[#2a2e39] text-gray-300 font-mono py-1.5 rounded border tv-border text-xs">$500</button>
+                        <button data-amount="1000" class="btn-quick-bet bg-[#131722] hover:bg-[#2a2e39] text-gray-300 font-mono py-1.5 rounded border tv-border text-xs">$1000</button>
+                    </div>
+                </div>
+
+                <div class="bg-[#131722] p-3 rounded-xl border tv-border flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Retorno em Vitória (2x):</span>
+                    <span id="preview-payout" class="text-base font-bold mono-num text-emerald-400">$200.00</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button id="btn-bet-up" class="bg-[#089981] hover:bg-[#07826d] text-white font-bold py-4 rounded-xl shadow-lg transition flex flex-col items-center justify-center space-y-1">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        <span class="text-sm tracking-wide">SUBIR (LONG)</span>
+                    </button>
+                    <button id="btn-bet-down" class="bg-[#f23645] hover:bg-[#d92b39] text-white font-bold py-4 rounded-xl shadow-lg transition flex flex-col items-center justify-center space-y-1">
+                        <i data-lucide="trending-down" class="w-6 h-6"></i>
+                        <span class="text-sm tracking-wide">DESCER (SHORT)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t tv-border mt-4">
+                <div class="flex justify-between text-xs text-gray-400 mb-2">
+                    <span>Histórico Recente</span>
+                    <span id="history-stats">Total: 0 jogadas</span>
+                </div>
+                <div class="max-h-36 overflow-y-auto rounded-lg border tv-border bg-[#131722]">
+                    <table class="w-full text-left text-xs">
+                        <tbody id="history-table-body">
+                            <tr>
+                                <td colspan="7" class="p-3 text-center text-gray-500 italic">Faça a primeira aposta no painel!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div id="result-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div id="result-modal-card" class="bg-[#1e222d] border-2 tv-border p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl pop-in space-y-4">
+            <div id="result-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto text-3xl">🏆</div>
+            <div>
+                <h3 id="result-title" class="text-2xl font-bold text-white">VOCÊ GANHOU!</h3>
+                <p id="result-subtitle" class="text-xs text-gray-400 mt-1">O preço fechou na direção prevista.</p>
+            </div>
+            <div class="bg-[#131722] p-3 rounded-xl border tv-border">
+                <span id="result-amount-display" class="text-2xl font-bold mono-num text-emerald-400">+$200.00</span>
+            </div>
+            <button id="btn-close-modal" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition">
+                Continuar Jogando
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME SCRIPT -->
+    <script>
+        const INITIAL_BALANCE = 1000;
+        let balance = INITIAL_BALANCE;
+        let selectedDuration = 5;
+        let currentBet = null;
+        let betTimerInterval = null;
+
+        let currentPrice = 1.00000;
+        let candles = [];
+        let currentCandle = null;
+
+        let canvas, ctx, chartParent;
+
+        function initMarketData() {
+            candles = [];
+            let basePrice = 1.00000;
+
+            for (let i = 40; i >= 0; i--) {
+                const change = (Math.random() - 0.5) * 0.0025;
+                const open = basePrice;
+                const close = open + change;
+                const high = Math.max(open, close) + Math.random() * 0.0012;
+                const low = Math.min(open, close) - Math.random() * 0.0012;
+
+                candles.push({
+                    open: parseFloat(open.toFixed(5)),
+                    high: parseFloat(high.toFixed(5)),
+                    low: parseFloat(low.toFixed(5)),
+                    close: parseFloat(close.toFixed(5))
+                });
+                basePrice = close;
+            }
+
+            currentPrice = candles[candles.length - 1].close;
+            currentCandle = { open: currentPrice, high: currentPrice, low: currentPrice, close: currentPrice, ticks: 0 };
+        }
+
+        function resizeCanvas() {
+            if (!canvas || !chartParent) return;
+            canvas.width = chartParent.clientWidth;
+            canvas.height = chartParent.clientHeight;
+            drawChart();
+        }
+
+        function updateTick() {
+            const randomDelta = (Math.random() - 0.5) * 0.0015;
+            currentPrice = parseFloat(Math.max(0.00100, currentPrice + randomDelta).toFixed(5));
+
+            const headerPriceEl = document.getElementById('header-price');
+            if (headerPriceEl) headerPriceEl.innerText = currentPrice.toFixed(5);
+
+            currentCandle.close = currentPrice;
+            if (currentPrice > currentCandle.high) currentCandle.high = currentPrice;
+            if (currentPrice < currentCandle.low) currentCandle.low = currentPrice;
+            currentCandle.ticks++;
+
+            if (currentCandle.ticks >= 4) {
+                candles.push({ ...currentCandle });
+                if (candles.length > 50) candles.shift();
+
+                currentCandle = {
+                    open: currentPrice,
+                    high: currentPrice,
+                    low: currentPrice,
+                    close: currentPrice,
+                    ticks: 0
+                };
+            }
+
+            drawChart();
+        }
+
+        function drawChart() {
+            if (!ctx || !canvas) return;
+            const width = canvas.width;
+            const height = canvas.height;
+
+            ctx.fillStyle = '#131722';
+            ctx.fillRect(0, 0, width, height);
+
+            const allCandles = [...candles, currentCandle];
+            if (allCandles.length === 0) return;
+
+            let minPrice = Infinity;
+            let maxPrice = -Infinity;
+
+            allCandles.forEach(c => {
+                if (c.low < minPrice) minPrice = c.low;
+                if (c.high > maxPrice) maxPrice = c.high;
+            });
+
+            if (currentBet) {
+                if (currentBet.entryPrice < minPrice) minPrice = currentBet.entryPrice;
+                if (currentBet.entryPrice > maxPrice) maxPrice = currentBet.entryPrice;
+            }
+
+            const padding = (maxPrice - minPrice) * 0.20 || 0.002;
+            minPrice -= padding;
+            maxPrice += padding;
+
+            const priceToY = (price) => height - ((price - minPrice) / (maxPrice - minPrice)) * height;
+
+            // Grid lines
+            ctx.strokeStyle = '#1e222d';
+            ctx.lineWidth = 1;
+            ctx.fillStyle = '#787b86';
+            ctx.font = '10px "JetBrains Mono", monospace';
+
+            for (let i = 0; i <= 5; i++) {
+                const y = (height / 5) * i;
+                const priceVal = maxPrice - ((maxPrice - minPrice) / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width - 65, y);
+                ctx.stroke();
+                ctx.fillText(priceVal.toFixed(5), width - 60, y + 3);
+            }
+
+            // Draw Candlesticks
+            const candleCount = allCandles.length;
+            const availableWidth = width - 75;
+            const candleWidth = Math.max(3, (availableWidth / candleCount) - 3);
+
+            allCandles.forEach((c, index) => {
+                const x = index * (availableWidth / candleCount) + (availableWidth / candleCount) / 2;
+                const openY = priceToY(c.open);
+                const closeY = priceToY(c.close);
+                const highY = priceToY(c.high);
+                const lowY = priceToY(c.low);
+
+                const isBullish = c.close >= c.open;
+                const color = isBullish ? '#089981' : '#f23645';
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(x, highY);
+                ctx.lineTo(x, lowY);
+                ctx.stroke();
+
+                ctx.fillStyle = color;
+                const bodyY = Math.min(openY, closeY);
+                const bodyHeight = Math.max(2, Math.abs(closeY - openY));
+                ctx.fillRect(x - candleWidth / 2, bodyY, candleWidth, bodyHeight);
+            });
+
+            // Active Bet Line
+            if (currentBet) {
+                const betY = priceToY(currentBet.entryPrice);
+                const isCurrentlyWinning = currentBet.type === 'UP' ? currentPrice > currentBet.entryPrice : currentPrice < currentBet.entryPrice;
+                ctx.fillStyle = isCurrentlyWinning ? 'rgba(8, 153, 129, 0.08)' : 'rgba(242, 54, 69, 0.08)';
+                ctx.fillRect(0, Math.min(betY, priceToY(currentPrice)), width - 65, Math.abs(betY - priceToY(currentPrice)));
+
+                ctx.strokeStyle = currentBet.type === 'UP' ? '#089981' : '#f23645';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 4]);
+                ctx.beginPath();
+                ctx.moveTo(0, betY);
+                ctx.lineTo(width - 65, betY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = currentBet.type === 'UP' ? '#089981' : '#f23645';
+                ctx.fillRect(10, betY - 11, 140, 22);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillText(`ENTRADA: $${currentBet.entryPrice.toFixed(5)}`, 15, betY + 4);
+            }
+
+            // Current Price Line
+            const currentY = priceToY(currentPrice);
+            ctx.strokeStyle = '#2962ff';
+            ctx.setLineDash([2, 2]);
+            ctx.beginPath();
+            ctx.moveTo(0, currentY);
+            ctx.lineTo(width - 65, currentY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#2962ff';
+            ctx.fillRect(width - 65, currentY - 10, 63, 20);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '11px "JetBrains Mono", monospace';
+            ctx.fillText(currentPrice.toFixed(5), width - 61, currentY + 4);
+        }
+
+        function placeBet(type) {
+            if (currentBet) return;
+
+            const amountInput = document.getElementById('input-bet-amount');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("Digite um valor válido para apostar!");
+                return;
+            }
+
+            if (amount > balance) {
+                alert("Saldo insuficiente para esta aposta!");
+                return;
+            }
+
+            balance -= amount;
+            updateBalanceUI();
+
+            currentBet = {
+                type: type,
+                amount: amount,
+                entryPrice: currentPrice,
+                timeLeft: selectedDuration
+            };
+
+            toggleBetControls(false);
+
+            const banner = document.getElementById('active-bet-banner');
+            const bannerType = document.getElementById('banner-type');
+            const bannerAmount = document.getElementById('banner-amount');
+            const bannerTimer = document.getElementById('banner-timer');
+
+            bannerType.innerText = type === 'UP' ? 'COMPRA (SUBIR)' : 'VENDER (DESCER)';
+            bannerType.className = `font-bold text-xs px-2.5 py-1 rounded ${type === 'UP' ? 'bg-[#089981] text-white' : 'bg-[#f23645] text-white'}`;
+            bannerAmount.innerText = `$${amount.toFixed(2)}`;
+            bannerTimer.innerText = `${currentBet.timeLeft}s`;
+            banner.classList.remove('hidden');
+
+            betTimerInterval = setInterval(() => {
+                currentBet.timeLeft--;
+                bannerTimer.innerText = `${currentBet.timeLeft}s`;
+
+                if (currentBet.timeLeft <= 0) {
+                    clearInterval(betTimerInterval);
+                    finishBet();
+                }
+            }, 1000);
+        }
+
+        function finishBet() {
+            const isWin = currentBet.type === 'UP' 
+                ? currentPrice > currentBet.entryPrice
+                : currentPrice < currentBet.entryPrice;
+
+            const isTie = currentPrice === currentBet.entryPrice;
+            let profit = 0;
+
+            if (isWin) {
+                profit = currentBet.amount * 2;
+                balance += profit;
+            } else if (isTie) {
+                balance += currentBet.amount;
+            }
+
+            updateBalanceUI();
+            addHistoryRecord(currentBet, currentPrice, isWin, isTie);
+            showResultModal(isWin, isTie, profit, currentBet.amount);
+
+            currentBet = null;
+            document.getElementById('active-bet-banner').classList.add('hidden');
+            toggleBetControls(true);
+            checkBankrupt();
+        }
+
+        function checkBankrupt() {
+            if (balance <= 0) {
+                setTimeout(() => {
+                    document.getElementById('result-modal').classList.add('hidden');
+                    document.getElementById('bankrupt-modal').classList.remove('hidden');
+                }, 1200);
+            }
+        }
+
+        function toggleBetControls(enabled) {
+            document.getElementById('btn-bet-up').disabled = !enabled;
+            document.getElementById('btn-bet-down').disabled = !enabled;
+            document.getElementById('btn-bet-up').style.opacity = enabled ? '1' : '0.4';
+            document.getElementById('btn-bet-down').style.opacity = enabled ? '1' : '0.4';
+        }
+
+        function showResultModal(isWin, isTie, profit, betAmount) {
+            const modal = document.getElementById('result-modal');
+            const card = document.getElementById('result-modal-card');
+            const icon = document.getElementById('result-icon-container');
+            const title = document.getElementById('result-title');
+            const subtitle = document.getElementById('result-subtitle');
+            const amountDisp = document.getElementById('result-amount-display');
+
+            if (isWin) {
+                card.className = "bg-[#1e222d] border-2 border-emerald-500 p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl pop-in space-y-4";
+                icon.className = "w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-3xl border border-emerald-500/40";
+                icon.innerText = "🏆";
+                title.innerText = "VOCÊ GANHOU!";
+                title.className = "text-2xl font-bold text-emerald-400";
+                subtitle.innerText = "O preço fechou na direção prevista!";
+                amountDisp.innerText = `+$${profit.toFixed(2)}`;
+                amountDisp.className = "text-2xl font-bold mono-num text-emerald-400";
+            } else if (isTie) {
+                card.className = "bg-[#1e222d] border-2 border-amber-500 p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl pop-in space-y-4";
+                icon.className = "w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-3xl border border-amber-500/40";
+                icon.innerText = "🤝";
+                title.innerText = "EMPATE!";
+                title.className = "text-2xl font-bold text-amber-400";
+                subtitle.innerText = "O preço fechou no exato ponto de entrada.";
+                amountDisp.innerText = `$${betAmount.toFixed(2)}`;
+                amountDisp.className = "text-2xl font-bold mono-num text-amber-400";
+            } else {
+                card.className = "bg-[#1e222d] border-2 border-red-500 p-6 rounded-2xl max-w-sm w-full text-center shadow-2xl pop-in space-y-4";
+                icon.className = "w-16 h-16 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center mx-auto text-3xl border border-red-500/40";
+                icon.innerText = "💥";
+                title.innerText = "VOCÊ PERDEU!";
+                title.className = "text-2xl font-bold text-red-400";
+                subtitle.innerText = "O gráfico fechou do lado oposto ao apostado!";
+                amountDisp.innerText = `-$${betAmount.toFixed(2)}`;
+                amountDisp.className = "text-2xl font-bold mono-num text-red-400";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        let historyCount = 0;
+        function addHistoryRecord(bet, closePrice, isWin, isTie) {
+            historyCount++;
+            const tbody = document.getElementById('history-table-body');
+            if (historyCount === 1) tbody.innerHTML = '';
+
+            const row = document.createElement('tr');
+            row.className = "hover:bg-[#2a2e39]/50 transition";
+            
+            const timeStr = new Date().toLocaleTimeString('pt-BR');
+            const typeLabel = bet.type === 'UP' ? 'COMPRA' : 'VENDER';
+            const resultText = isWin ? 'VITÓRIA 🏆' : isTie ? 'EMPATE 🤝' : 'DERROTA ❌';
+            const profitText = isWin ? `+$${(bet.amount * 2).toFixed(2)}` : isTie ? `$0.00` : `-$${bet.amount.toFixed(2)}`;
+
+            row.innerHTML = `
+                <td class="p-2 font-mono text-gray-400">${timeStr}</td>
+                <td class="p-2 font-bold ${bet.type === 'UP' ? 'text-[#089981]' : 'text-[#f23645]'}">${typeLabel}</td>
+                <td class="p-2 mono-num text-amber-400 font-semibold">$${bet.amount.toFixed(2)}</td>
+                <td class="p-2 mono-num">${bet.entryPrice.toFixed(5)}</td>
+                <td class="p-2 mono-num">${closePrice.toFixed(5)}</td>
+                <td class="p-2 ${isWin ? 'text-emerald-400 font-bold' : isTie ? 'text-amber-400' : 'text-red-400'}">${resultText}</td>
+                <td class="p-2 text-right mono-num ${isWin ? 'text-emerald-400 font-bold' : 'text-red-400'}">${profitText}</td>
+            `;
+
+            tbody.insertBefore(row, tbody.firstChild);
+            document.getElementById('history-stats').innerText = `Total: ${historyCount} jogadas`;
+        }
+
+        function updateBalanceUI() {
+            document.getElementById('account-balance').innerText = `$${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            updatePayoutPreview();
+        }
+
+        function updatePayoutPreview() {
+            const amountInput = document.getElementById('input-bet-amount');
+            const amount = parseFloat(amountInput.value) || 0;
+            const previewEl = document.getElementById('preview-payout');
+            if (previewEl) previewEl.innerText = `$${(amount * 2).toFixed(2)}`;
+        }
+
+        function resetGame(silent = false) {
+            if (silent || confirm("Deseja resetar o saldo da conta para $1.000,00 e reiniciar?")) {
+                balance = INITIAL_BALANCE;
+                if (currentBet) {
+                    clearInterval(betTimerInterval);
+                    currentBet = null;
+                    document.getElementById('active-bet-banner').classList.add('hidden');
+                    toggleBetControls(true);
+                }
+                historyCount = 0;
+                document.getElementById('history-table-body').innerHTML = `<tr><td colspan="7" class="p-3 text-center text-gray-500 italic">Faça a primeira aposta no painel!</td></tr>`;
+                document.getElementById('history-stats').innerText = `Total: 0 jogadas`;
+                document.getElementById('bankrupt-modal').classList.add('hidden');
+                document.getElementById('result-modal').classList.add('hidden');
+
+                initMarketData();
+                updateBalanceUI();
+            }
+        }
+
+        window.onload = function() {
+            canvas = document.getElementById('trading-chart');
+            ctx = canvas.getContext('2d');
+            chartParent = document.getElementById('chart-parent');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            initMarketData();
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            document.getElementById('btn-bet-up').addEventListener('click', () => placeBet('UP'));
+            document.getElementById('btn-bet-down').addEventListener('click', () => placeBet('DOWN'));
+            document.getElementById('btn-reset').addEventListener('click', () => resetGame(false));
+            document.getElementById('btn-reload-bankrupt').addEventListener('click', () => resetGame(true));
+            document.getElementById('btn-close-modal').addEventListener('click', () => {
+                document.getElementById('result-modal').classList.add('hidden');
+                checkBankrupt();
+            });
+
+            const amountInput = document.getElementById('input-bet-amount');
+            amountInput.addEventListener('input', updatePayoutPreview);
+
+            document.querySelectorAll('.btn-quick-bet').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    amountInput.value = e.target.dataset.amount;
+                    updatePayoutPreview();
+                });
+            });
+
+            document.getElementById('btn-all-in').addEventListener('click', () => {
+                amountInput.value = Math.floor(balance);
+                updatePayoutPreview();
+            });
+
+            document.querySelectorAll('.btn-timer').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.btn-timer').forEach(b => {
+                        b.classList.remove('bg-blue-600', 'text-white');
+                        b.classList.add('bg-[#131722]', 'text-gray-300');
+                    });
+                    e.target.classList.remove('bg-[#131722]', 'text-gray-300');
+                    e.target.classList.add('bg-blue-600', 'text-white');
+                    selectedDuration = parseInt(e.target.dataset.time);
+                });
+            });
+
+            setInterval(updateTick, 180);
+        };
+    </script>
+</body>
+</html>
