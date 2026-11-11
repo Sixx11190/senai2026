@@ -30,7 +30,7 @@
             <a href="#sobre">Sobre nós</a>
             <a href="#contato" id="link-contato">Contato</a>
             <a href="../../FinancePro/index.html" class="fin">Vendedores</a>
-            <a href="#" class="btn-auth">Entrar / Cadastrar</a>
+            <a href="#" id="auth-link" class="btn-auth">Entrar / Cadastrar</a>
         </nav>
     <button id="btn-tema" class="btn-tema" aria-label="Alternar modo escuro">🌙</button>
     <button id="btn-config" class="btn-config" aria-label="Configurações">⚙️</button>
@@ -49,7 +49,6 @@
             <li><a href="#colecoes">Drops especiais</a></li>
             <li><a href="#colecoes">Limitados</a></li>
             <li><a href="#colecoes">Ofertas</a></li>
-            <li><a href="https://general-runtime.voiceflow.com" id="IA">Stark Assistente</a></li>
         </ul>
     </aside>
 
@@ -157,17 +156,17 @@
 
             <form id="form-signin" class="auth-form">
                 <h2>Bem-vindo de volta!</h2>
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="password" placeholder="Sua senha" required>
+                <input type="email" id="signin-email" placeholder="Seu e-mail" required>
+                <input type="password" id="signin-senha" placeholder="Sua senha" required>
                 <button type="submit" class="submit-btn">Entrar</button>
                 <h7>Esqueceu sua senha? <a href="senha.html">Clique aqui</a></h7>
             </form>
 
             <form id="form-signup" class="auth-form hidden">
                 <h2>Crie sua conta</h2>
-                <input type="text" placeholder="Seu nome" required>
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="password" placeholder="Crie uma senha" required>
+                <input type="text" id="signup-nome" name="nome" placeholder="Seu nome" required>
+                <input type="email" id="signup-email" name="email" placeholder="Seu e-mail" required>
+                <input type="password" id="signup-senha" name="senha" placeholder="Crie uma senha" required>
                 <button type="submit" class="submit-btn">Cadastrar</button>
                 <h7>ajuda? <a href="ajuda.html">Clique aqui</a></h7>
             </form>

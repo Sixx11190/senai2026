@@ -59,6 +59,17 @@ header {
 
 .header-left { display: flex; align-items: center; gap: 0.8rem; }
 
+/* Garante que o texto digitado nos inputs do modal seja visível (branco) */
+input, select, textarea {
+    color: #ffffff !important; /* Cor do texto digitado */
+    background-color: #1a1528; /* Cor de fundo escura para contraste */
+}
+
+/* Se houver inputs com placeholders escuros, ajuste também: */
+input::placeholder {
+    color: #a09cb0;
+}
+
 .logo {
     font-family: 'Unbounded', sans-serif;
     font-weight: 800;
@@ -488,3 +499,47 @@ h7 {
 [data-tema="escuro"] .tab-btn.active,
 [data-tema="escuro"] .btn:hover,
 [data-tema="escuro"] .submit-btn:hover { color: #fff; }
+
+/* --- Estilo do Perfil do Usuário Logado no Cabeçalho --- */
+
+.user-profile-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 6px 12px;
+    border-radius: 30px;
+    color: #1a1528;
+    font-size: 0.9rem;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1a1528;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Quando o Tema Escuro estiver ativado --- */
+html[data-tema="escuro"] .user-profile-menu {
+    background: rgba(255, 255, 255, 0.05); /* Fundo escuro translúcido */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil */
+    color: #ffffff; /* Texto branco */
+}
+
+html[data-tema="escuro"] .user-name {
+    color: #f3efe6; /* Nome do usuário em tom claro legível */
+}
+
+/* Opcional: Ajuste do botão de logout no modo escuro */
+html[data-tema="escuro"] .btn-logout {
+    color: #ff6b6b;
+}
+
+html[data-tema="escuro"] .btn-logout:hover {
+    background: rgba(255, 107, 107, 0.15);
+}

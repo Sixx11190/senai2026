@@ -4,9 +4,7 @@ USE empresa_internacional;
 CREATE TABLE usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    cpf VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
     senha VARCHAR(100) NOT NULL
 );
 
@@ -33,3 +31,17 @@ CREATE TABLE financas (
     valor_liquido DECIMAL(10, 2) NOT NULL,
     valor_mensal DECIMAL(10, 2) NOT NULL
 );
+
+ALTER TABLE compra
+ADD CONSTRAINT fk_compra_usuario
+FOREIGN KEY (id_usuario) 
+REFERENCES usuario(id_usuario);
+
+ALTER TABLE compra
+ADD CONSTRAINT fk_compra_produtos
+FOREIGN KEY (id_produto) 
+REFERENCES produtos(id_produto);
+
+ALTER TABLE usuario
+ADD CONSTRAINT uk_usuario_unico UNIQUE (email);
+
