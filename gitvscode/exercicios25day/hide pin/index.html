@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hide Pin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <label for="usuario">Usuario</label>
+    <input type="text" placeholder="Usuario" id="usuario">
+    <br><br>
+    <label for="senha">Senha</label>
+    <input type="password" placeholder="Senha" id="senha">
+    <br><br>
+    <button onclick="verificar()" id="btnEnviar">Enviar</button>
+
+    <script>
+        function verificar() {
+            const digitada = document.getElementById("senha").value;
+
+            //"MTMwMjEzMzc=" é a senha "13021337" embaralhada
+            if(btoa(digitada) === "MTMwMjEzMzc=") {
+                window.location.href = "inicial.html";
+            } else {
+                alert("Acesso Negado");
+            }
+        }
+    </script>
+
+
+    <p id="resultado"></p>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
