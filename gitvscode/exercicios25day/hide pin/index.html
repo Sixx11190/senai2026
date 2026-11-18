@@ -17,9 +17,8 @@
 
     <script>
         function verificar() {
-            const digitada = document.getElementById("senha").value;
-
-            //"MTMwMjEzMzc=" é a senha "13021337" embaralhada
+            const digitada = document.getElementById("senha").value
+            
             if(btoa(digitada) === "MTMwMjEzMzc=") {
                 window.location.href = "inicial.html";
             } else {
